@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+// import CarrinhoDeCompras from './CarrinhoDeCompras';
 
 class PaginaPrincipal extends React.Component {
   state = {
@@ -14,6 +16,12 @@ class PaginaPrincipal extends React.Component {
     });
   };
 
+  enableBtn = () => {
+    const { history } = this.props;
+    console.log(history);
+    history.push('/carrinhodecompras');
+  };
+
   render() {
     const { pesquisa } = this.state;
     return (
@@ -25,6 +33,20 @@ class PaginaPrincipal extends React.Component {
             onChange={ this.handleChange }
             type="text"
           />
+          <div>
+
+            <button
+              data-testid="shopping-cart-button"
+              type="button"
+              name="btCarrinho"
+              // onChange={ <CarrinhoDeCompras /> }
+              onClick={ this.enableBtn }
+            >
+              xablau
+
+            </button>
+            {/* <CarrinhoDeCompras /> */}
+          </div>
         </div>
 
         {pesquisa.length === 0 ? (
@@ -39,5 +61,11 @@ class PaginaPrincipal extends React.Component {
     );
   }
 }
+
+PaginaPrincipal.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default PaginaPrincipal;
