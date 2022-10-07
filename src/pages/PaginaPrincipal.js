@@ -1,9 +1,15 @@
 import React from 'react';
+import { getCategories } from '../services/api';
 
 class PaginaPrincipal extends React.Component {
   state = {
     pesquisa: '',
+    categorias: [],
   };
+
+  async componentDidMount() {
+    this.setState({ categorias: await getCategories() });
+  }
 
   handleChange = ({ target }) => {
     const { name } = target;
@@ -15,7 +21,7 @@ class PaginaPrincipal extends React.Component {
   };
 
   render() {
-    const { pesquisa } = this.state;
+    const { pesquisa, categorias } = this.state;
     return (
       <>
         <div>
@@ -26,11 +32,15 @@ class PaginaPrincipal extends React.Component {
             type="text"
           />
         </div>
+        {categorias.map((item) => (
+          <button data-testid="category" name={ item.name } type="button" key={ item.id }>
+            {item.name}
+          </button>
+        ))}
 
         {pesquisa.length === 0 ? (
           <p data-testid="home-initial-message">
             Digite algum termo de pesquisa ou escolha uma categoria.
-
           </p>
         ) : (
           <p />
