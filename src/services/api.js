@@ -1,9 +1,11 @@
 export async function getCategories() {
   // Implemente aqui
+  return 1;
 }
 
 export async function getProductsFromCategoryAndQuery(/* categoryId, query */) {
   // Implemente aqui! Quando o fizer, descomente os parâmetros que essa função recebe
+  return 1;
 }
 
 export async function getProductById() {
