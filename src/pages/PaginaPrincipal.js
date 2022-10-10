@@ -6,7 +6,7 @@ import React from 'react';
 // } from 'react-router-dom';
 import {
   getCategories,
-  getProductsFromCategoryAndQuery,
+  getProductsFromCategoryAndQuery
 } from '../services/api';
 
 class PaginaPrincipal extends React.Component {
@@ -16,6 +16,7 @@ class PaginaPrincipal extends React.Component {
     categorias: [],
     itensLoja: [],
     mostrarItens: false,
+    carrinho: [],
   };
 
   async componentDidMount() {
@@ -49,6 +50,17 @@ class PaginaPrincipal extends React.Component {
   clickCategoria = async (item) => {
     await this.setState({ categoriaID: item });
     this.renderizaItens();
+  };
+
+  addCarrinho = (item) => {
+    // console.log(item);
+    const { carrinho } = this.state;
+    this.setState((prevState) => ({
+      carrinho: [...prevState.carrinho, item],
+    }));
+    localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho));
+    localStorage.getItem('carrinhoLocalStorage');
+    console.log(localStorage.getItem('carrinhoLocalStorage'));
   };
 
   render() {
@@ -100,6 +112,14 @@ class PaginaPrincipal extends React.Component {
               <p>{item.title}</p>
               <img alt="Produto" src={ item.thumbnail } />
               <p>{item.price}</p>
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ () => this.addCarrinho(item) }
+              >
+                Comprar
+
+              </button>
             </div>
           )) : (
             <p>Nenhum produto foi encontrado</p>
