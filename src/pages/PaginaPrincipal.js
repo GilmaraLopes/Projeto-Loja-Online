@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+// import {
+//   Link,
+
+// } from 'react-router-dom';
 import {
   getCategories,
   getProductsFromCategoryAndQuery,
@@ -29,19 +33,22 @@ class PaginaPrincipal extends React.Component {
 
   enableBtn = () => {
     const { history } = this.props;
-    console.log(history);
     history.push('/carrinhodecompras');
   };
 
   renderizaItens = async () => {
-    const { categoriaID, pesquisa, itensLoja } = this.state;
+    const { categoriaID, pesquisa } = this.state;
     const resultadoPesquisa = await
     getProductsFromCategoryAndQuery(categoriaID, pesquisa);
     this.setState({
       itensLoja: resultadoPesquisa.results,
       mostrarItens: true,
     });
-    console.log(itensLoja);
+  };
+
+  clickCategoria = async (item) => {
+    await this.setState({ categoriaID: item });
+    this.renderizaItens();
   };
 
   render() {
@@ -76,14 +83,13 @@ class PaginaPrincipal extends React.Component {
         </div>
         {categorias.map((item) => (
           <button
-            onClick={ () => this.setState({
-              categoriaID: item.id,
-            }) }
+            onClick={ () => this.clickCategoria(item.id) }
             data-testid="category"
             name={ item.name }
             type="button"
             key={ item.id }
           >
+            {/* <Link component={}/> */}
             {item.name}
           </button>
         ))}
