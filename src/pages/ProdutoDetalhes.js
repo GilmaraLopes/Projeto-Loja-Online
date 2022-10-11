@@ -9,15 +9,25 @@ export default class ProdutoDetalhes extends Component {
     carrinho: [],
     email: '',
     rating: '',
-    comment: '',
+    text: '',
+    mostrarForm: false,
+    infosForm: [],
   };
 
   async componentDidMount() {
     const { history } = this.props;
     const { pathname } = history.location;
+    const { produtoId } = this.state;
     const urlString = 17;
     const pathId = pathname.substring(urlString);
     const products = await getProductById(pathId);
+
+    if (JSON.parse(localStorage.getItem(produtoId) !== null)) {
+      this.setState({
+        mostrarForm: true,
+        infosForm: JSON.parse(localStorage.getItem(produtoId.id)),
+      });
+    }
 
     if (JSON.parse(localStorage.getItem('carrinhoLocalStorage') !== null)) {
       this.setState({
@@ -30,10 +40,21 @@ export default class ProdutoDetalhes extends Component {
     });
   }
 
+  enviarInfos = () => {
+    const { email, rating, text, produtoId } = this.state;
+    const objInfos = { email, text, rating };
+    const todos = JSON.parse(localStorage.getItem(produtoId.id));
+    if (todos !== null) {
+      const arrayTodos = [...todos, objInfos];
+      localStorage.setItem(produtoId.id, JSON.stringify([arrayTodos]));
+    } else {
+      localStorage.setItem(produtoId.id, JSON.stringify(objInfos));
+    }
+  };
+
   handleChange = ({ target }) => {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-
     this.setState({
       [name]: value,
     });
@@ -57,8 +78,8 @@ export default class ProdutoDetalhes extends Component {
   };
 
   render() {
-    const { produtoId, email, comment, rating } = this.state;
-    console.log(rating);
+    const { produtoId, email, text, mostrarForm, infosForm } = this.state;
+    console.log(JSON.parse(localStorage.getItem(produtoId.id)));
     return (
 
       <div>
@@ -114,11 +135,11 @@ export default class ProdutoDetalhes extends Component {
             Comentario
             <textarea
               onChange={ this.handleChange }
-              name="comment"
+              name="text"
               data-testid="product-detail-evaluation"
               id="commentForm"
               type="text"
-              value={ comment }
+              value={ text }
             />
           </label>
 
@@ -198,17 +219,30 @@ export default class ProdutoDetalhes extends Component {
               type="radio"
               id="nota5"
               name="rating"
-
             />
             5
           </label>
-          <button type="submit" data-testid="submit-review-btn">Enviar</button>
+          <button
+            onClick={ this.enviarInfos }
+            type="button"
+            data-testid="submit-review-btn"
+          >
+            Enviar
+          </button>
+          {mostrarForm && JSON.parse(localStorage.getItem(produtoId.id).length > 0 && (
+
+            JSON.parse(localStorage.getItem([produtoId.id]).map((item) => (
+              <p key={ item }>
+                {item.email}
+                {item.rating}
+                {item.text}
+              </p>
+            )))))}
         </form>
       </div>
     );
   }
 }
-
 ProdutoDetalhes.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
