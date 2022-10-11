@@ -26,7 +26,7 @@ export default class CarrinhoDeCompras extends Component {
                   { item.title }
                 </p>
                 <p data-testid="shopping-cart-product-quantity">
-                  {item.quantity}
+                  1
                 </p>
               </div>
             )) }

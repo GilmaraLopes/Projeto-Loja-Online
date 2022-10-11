@@ -51,12 +51,15 @@ class PaginaPrincipal extends React.Component {
     });
   };
 
-  addCarrinho = (item) => {
+  addCarrinhoAsync = () => {
     const { carrinho } = this.state;
+    localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho));
+  };
+
+  addCarrinho = (item) => {
     this.setState((prevState) => ({
       carrinho: [...prevState.carrinho, item],
-    }));
-    localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho));
+    }), this.addCarrinhoAsync);
   };
 
   render() {
@@ -97,24 +100,26 @@ class PaginaPrincipal extends React.Component {
             type="button"
             key={ item.id }
           >
-            {/* <Link component={}/> */}
             {item.name}
           </button>
         ))}
         {itensLoja.length > 1 && mostrarItens === true
           ? itensLoja.map((item) => (
-            <Link
-              className="lista-produtos"
-              key={ item.id }
-              to={ `/produtodetalhes/${item.id}` }
-              data-testid="product-detail-link"
-            >
-              <div data-testid="product">
-                {' '}
-                <p>{item.title}</p>
-                <img alt="Produto" src={ item.thumbnail } />
-                <p>{item.price}</p>
-              </div>
+            <>
+              <Link
+                className="lista-produtos"
+                key={ item.id }
+                to={ `/produtodetalhes/${item.id}` }
+                data-testid="product-detail-link"
+              >
+                <div data-testid="product">
+                  {' '}
+                  <p>{item.title}</p>
+                  <img alt="Produto" src={ item.thumbnail } />
+                  <p>{item.price}</p>
+                </div>
+
+              </Link>
               <button
                 type="button"
                 data-testid="product-add-to-cart"
@@ -123,7 +128,7 @@ class PaginaPrincipal extends React.Component {
                 Comprar
 
               </button>
-            </Link>
+            </>
           )) : (
             <p>Nenhum produto foi encontrado</p>
           )}

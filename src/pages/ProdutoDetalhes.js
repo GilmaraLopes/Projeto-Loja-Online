@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
 
 export default class ProdutoDetalhes extends Component {
-  // state = { categorias: '' };
   state = {
     produtoId: '',
   };
@@ -19,26 +18,15 @@ export default class ProdutoDetalhes extends Component {
     this.setState({
       produtoId: products,
     });
-    // return products;
   }
-  // handleChange = ({ target }) => {
-  //   const { product } = target;
-  //   const value = target.type === 'checkbox' ? target.checked : target.value;
-  // };
 
   enableBtn = () => {
     const { history } = this.props;
-    // const { pathname } = history.location;
     history.push('/carrinhodecompras');
   };
 
   render() {
     const { produtoId } = this.state;
-    // const { categorias } = this.props;
-    // const { history } = this.props;
-    // const { pathname } = history.location;
-    // const pathId = pathname.substring(17);
-    // console.log(pathId);
 
     return (
 
