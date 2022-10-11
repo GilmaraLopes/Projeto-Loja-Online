@@ -16,6 +16,9 @@ export async function getProductsFromCategoryAndQuery(CATEGORY_ID, QUERY) {
   if (QUERY.length > 0 && CATEGORY_ID.length > 0) {
     url = `https://api.mercadolibre.com/sites/MLB/search?category=${CATEGORY_ID}&q=${QUERY}`;
   }
+  if (QUERY.length === 0 && CATEGORY_ID.length === 0) {
+    return '';
+  }
   const fetchApi = await fetch(url);
   const products = await fetchApi.json();
   return products;

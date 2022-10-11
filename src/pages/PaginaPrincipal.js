@@ -6,7 +6,7 @@ import React from 'react';
 // } from 'react-router-dom';
 import {
   getCategories,
-  getProductsFromCategoryAndQuery
+  getProductsFromCategoryAndQuery,
 } from '../services/api';
 
 class PaginaPrincipal extends React.Component {
