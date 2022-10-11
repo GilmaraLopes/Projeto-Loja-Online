@@ -17,39 +17,45 @@ export default class ProdutoDetalhes extends Component {
   async componentDidMount() {
     const { history } = this.props;
     const { pathname } = history.location;
-    const { produtoId } = this.state;
     const urlString = 17;
     const pathId = pathname.substring(urlString);
     const products = await getProductById(pathId);
-
-    if (JSON.parse(localStorage.getItem(produtoId) !== null)) {
+    this.setState({
+      produtoId: products,
+    });
+    if (JSON.parse(localStorage.getItem(products.id) !== null)) {
       this.setState({
         mostrarForm: true,
-        infosForm: JSON.parse(localStorage.getItem(produtoId.id)),
+        infosForm: JSON.parse(localStorage.getItem(products.id)),
       });
     }
-
     if (JSON.parse(localStorage.getItem('carrinhoLocalStorage') !== null)) {
       this.setState({
         carrinho: JSON.parse(localStorage.getItem('carrinhoLocalStorage')),
       });
     }
-
-    this.setState({
-      produtoId: products,
-    });
   }
 
-  enviarInfos = () => {
-    const { email, rating, text, produtoId } = this.state;
-    const objInfos = { email, text, rating };
+  enviarInfos = async () => {
+    const { history } = this.props;
+    const { pathname } = history.location;
+    const { produtoId } = this.state;
+    const urlString = 17;
+    const pathId = pathname.substring(urlString);
+    const { email, rating, text } = this.state;
+    const objInfos = [{ email, text, rating }];
     const todos = JSON.parse(localStorage.getItem(produtoId.id));
     if (todos !== null) {
-      const arrayTodos = [...todos, objInfos];
-      localStorage.setItem(produtoId.id, JSON.stringify([arrayTodos]));
+      const arrayTodos = [...todos, ...objInfos];
+      localStorage.setItem(produtoId.id, JSON.stringify(arrayTodos));
     } else {
       localStorage.setItem(produtoId.id, JSON.stringify(objInfos));
     }
+    const products = await getProductById(pathId);
+    this.setState({
+      mostrarForm: true,
+      infosForm: JSON.parse(localStorage.getItem(products.id)),
+    });
   };
 
   handleChange = ({ target }) => {
@@ -67,9 +73,12 @@ export default class ProdutoDetalhes extends Component {
 
   addCarrinho = (item) => {
     item.quantidade = 1;
-    this.setState((prevState) => ({
-      carrinho: [...prevState.carrinho, item],
-    }), this.addCarrinhoAsync);
+    this.setState(
+      (prevState) => ({
+        carrinho: [...prevState.carrinho, item],
+      }),
+      this.addCarrinhoAsync,
+    );
   };
 
   enableBtn = () => {
@@ -79,18 +88,14 @@ export default class ProdutoDetalhes extends Component {
 
   render() {
     const { produtoId, email, text, mostrarForm, infosForm } = this.state;
-    console.log(JSON.parse(localStorage.getItem(produtoId.id)));
     return (
-
       <div>
         <Link to="/CarrinhoDeCompras" data-testid="product-detail-link">
           <h3 data-testid="product-detail-name">{produtoId.title}</h3>
           <div data-testid="product-detail-image">
-
             <img alt="Produto" src={ produtoId.thumbnail } />
           </div>
           <p data-testid="product-detail-price">{produtoId.price}</p>
-
         </Link>
         <button
           type="button"
@@ -98,23 +103,22 @@ export default class ProdutoDetalhes extends Component {
           onClick={ this.enableBtn }
         >
           Carrinho
-
         </button>
         <button
           type="button"
           data-testid="product-detail-add-to-cart"
           onClick={ () => this.addCarrinho(produtoId) }
-
         >
           Comprar
-
         </button>
-        {' '}
         <div>
           {' '}
           <Link to="/">
             {' '}
-            <img src="https://img.icons8.com/ios/50/000000/left2.png" alt="voltar" />
+            <img
+              src="https://img.icons8.com/ios/50/000000/left2.png"
+              alt="voltar"
+            />
             {' '}
           </Link>
           {' '}
@@ -155,7 +159,6 @@ export default class ProdutoDetalhes extends Component {
               type="radio"
               id="nota1"
               name="rating"
-
             />
             1
           </label>
@@ -171,7 +174,6 @@ export default class ProdutoDetalhes extends Component {
               type="radio"
               id="nota2"
               name="rating"
-
             />
             2
           </label>
@@ -187,7 +189,6 @@ export default class ProdutoDetalhes extends Component {
               type="radio"
               id="nota3"
               name="rating"
-
             />
             3
           </label>
@@ -203,7 +204,6 @@ export default class ProdutoDetalhes extends Component {
               type="radio"
               id="nota4"
               name="rating"
-
             />
             4
           </label>
@@ -229,15 +229,14 @@ export default class ProdutoDetalhes extends Component {
           >
             Enviar
           </button>
-          {mostrarForm && JSON.parse(localStorage.getItem(produtoId.id).length > 0 && (
-
-            JSON.parse(localStorage.getItem([produtoId.id]).map((item) => (
-              <p key={ item }>
+          {mostrarForm
+            && infosForm.map((item) => (
+              <p key={ item.email }>
                 {item.email}
                 {item.rating}
                 {item.text}
               </p>
-            )))))}
+            ))}
         </form>
       </div>
     );
