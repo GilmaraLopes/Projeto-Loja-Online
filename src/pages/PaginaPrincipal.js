@@ -57,6 +57,7 @@ class PaginaPrincipal extends React.Component {
   };
 
   addCarrinho = (item) => {
+    item.quantidade = 1;
     this.setState((prevState) => ({
       carrinho: [...prevState.carrinho, item],
     }), this.addCarrinhoAsync);
