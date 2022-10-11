@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-// import {
-//   Link,
+import { Link } from 'react-router-dom';
 
-// } from 'react-router-dom';
 import {
   getCategories,
   getProductsFromCategoryAndQuery,
@@ -47,20 +45,18 @@ class PaginaPrincipal extends React.Component {
     });
   };
 
-  clickCategoria = async (item) => {
-    await this.setState({ categoriaID: item });
-    this.renderizaItens();
+  clickCategoria = (item) => {
+    this.setState({ categoriaID: item }, () => {
+      this.renderizaItens();
+    });
   };
 
   addCarrinho = (item) => {
-    // console.log(item);
     const { carrinho } = this.state;
     this.setState((prevState) => ({
       carrinho: [...prevState.carrinho, item],
     }));
     localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho));
-    localStorage.getItem('carrinhoLocalStorage');
-    console.log(localStorage.getItem('carrinhoLocalStorage'));
   };
 
   render() {
@@ -107,11 +103,18 @@ class PaginaPrincipal extends React.Component {
         ))}
         {itensLoja.length > 1 && mostrarItens === true
           ? itensLoja.map((item) => (
-            <div data-testid="product" key={ item.id }>
-              {' '}
-              <p>{item.title}</p>
-              <img alt="Produto" src={ item.thumbnail } />
-              <p>{item.price}</p>
+            <Link
+              className="lista-produtos"
+              key={ item.id }
+              to={ `/produtodetalhes/${item.id}` }
+              data-testid="product-detail-link"
+            >
+              <div data-testid="product">
+                {' '}
+                <p>{item.title}</p>
+                <img alt="Produto" src={ item.thumbnail } />
+                <p>{item.price}</p>
+              </div>
               <button
                 type="button"
                 data-testid="product-add-to-cart"
@@ -120,7 +123,7 @@ class PaginaPrincipal extends React.Component {
                 Comprar
 
               </button>
-            </div>
+            </Link>
           )) : (
             <p>Nenhum produto foi encontrado</p>
           )}

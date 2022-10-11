@@ -12,19 +12,6 @@ export default class CarrinhoDeCompras extends Component {
     }
   }
 
-  funcQuantidade = (item) => {
-    const { carrinho } = this.state;
-    const carrinhoID = [];
-    carrinho.map((item1) => carrinhoID.push(item1.id));
-    let count = 0;
-    for (let i = 0; i < carrinhoID.length; i = +1) {
-      if (item[i] === carrinhoID[i]) {
-        count = +1;
-      }
-    }
-    return count;
-  };
-
   render() {
     const { carrinho } = this.state;
     return (
@@ -33,12 +20,13 @@ export default class CarrinhoDeCompras extends Component {
         : (
           <div>
             { carrinho.length > 0 && carrinho.map((item, i) => (
+
               <div key={ i }>
                 <p data-testid="shopping-cart-product-name">
                   { item.title }
                 </p>
                 <p data-testid="shopping-cart-product-quantity">
-                  { () => this.funcQuantidade(item.id) }
+                  {item.quantity}
                 </p>
               </div>
             )) }
