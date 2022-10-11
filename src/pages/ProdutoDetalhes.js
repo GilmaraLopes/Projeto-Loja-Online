@@ -6,6 +6,7 @@ import { getProductById } from '../services/api';
 export default class ProdutoDetalhes extends Component {
   state = {
     produtoId: '',
+    carrinho: [],
   };
 
   async componentDidMount() {
@@ -13,12 +14,29 @@ export default class ProdutoDetalhes extends Component {
     const { pathname } = history.location;
     const urlString = 17;
     const pathId = pathname.substring(urlString);
-    console.log(pathId);
     const products = await getProductById(pathId);
+
+    if (JSON.parse(localStorage.getItem('carrinhoLocalStorage') !== null)) {
+      this.setState({
+        carrinho: JSON.parse(localStorage.getItem('carrinhoLocalStorage')),
+      });
+    }
+
     this.setState({
       produtoId: products,
     });
   }
+
+  addCarrinhoAsync = () => {
+    const { carrinho } = this.state;
+    localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho));
+  };
+
+  addCarrinho = (item) => {
+    this.setState((prevState) => ({
+      carrinho: [...prevState.carrinho, item],
+    }), this.addCarrinhoAsync);
+  };
 
   enableBtn = () => {
     const { history } = this.props;
@@ -27,7 +45,7 @@ export default class ProdutoDetalhes extends Component {
 
   render() {
     const { produtoId } = this.state;
-
+    console.log(produtoId);
     return (
 
       <div>
@@ -46,6 +64,15 @@ export default class ProdutoDetalhes extends Component {
           onClick={ this.enableBtn }
         >
           Carrinho
+
+        </button>
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ () => this.addCarrinho(produtoId) }
+
+        >
+          Comprar
 
         </button>
         {' '}
