@@ -45,6 +45,7 @@ export default class ProdutoDetalhes extends Component {
   };
 
   addCarrinho = (item) => {
+    item.quantidade = 1;
     this.setState((prevState) => ({
       carrinho: [...prevState.carrinho, item],
     }), this.addCarrinhoAsync);
@@ -97,111 +98,112 @@ export default class ProdutoDetalhes extends Component {
           </Link>
           {' '}
         </div>
+        <form>
+          <label htmlFor="emailInput">
+            Email
+            <input
+              onChange={ this.handleChange }
+              name="email"
+              data-testid="product-detail-email"
+              id="emailInput"
+              type="text"
+              value={ email }
+            />
+          </label>
+          <label htmlFor="commentForm">
+            Comentario
+            <textarea
+              onChange={ this.handleChange }
+              name="comment"
+              data-testid="product-detail-evaluation"
+              id="commentForm"
+              type="text"
+              value={ comment }
+            />
+          </label>
 
-        <label htmlFor="emailInput">
-          Email
-          <input
-            onChange={ this.handleChange }
-            name="email"
-            data-testid="product-detail-email"
-            id="emailInput"
-            type="text"
-            value={ email }
-          />
-        </label>
-        <label htmlFor="commentForm">
-          Comentario
-          <textarea
-            onChange={ this.handleChange }
-            name="comment"
-            data-testid="product-detail-evaluation"
-            id="commentForm"
-            type="text"
-            value={ comment }
-          />
-        </label>
+          <label htmlFor="nota1">
+            {' '}
+            <input
+              onClick={ () => {
+                this.setState({
+                  rating: 1,
+                });
+              } }
+              data-testid="1-rating"
+              type="radio"
+              id="nota1"
+              name="rating"
 
-        <label htmlFor="nota1">
-          {' '}
-          <input
-            onClick={ () => {
-              this.setState({
-                rating: 1,
-              });
-            } }
-            data-testid="1-rating"
-            type="radio"
-            id="nota1"
-            name="rating"
+            />
+            1
+          </label>
+          <label htmlFor="nota2">
+            {' '}
+            <input
+              onClick={ () => {
+                this.setState({
+                  rating: 2,
+                });
+              } }
+              data-testid="2-rating"
+              type="radio"
+              id="nota2"
+              name="rating"
 
-          />
-          1
-        </label>
-        <label htmlFor="nota2">
-          {' '}
-          <input
-            onClick={ () => {
-              this.setState({
-                rating: 2,
-              });
-            } }
-            data-testid="2-rating"
-            type="radio"
-            id="nota2"
-            name="rating"
+            />
+            2
+          </label>
+          <label htmlFor="nota3">
+            {' '}
+            <input
+              onClick={ () => {
+                this.setState({
+                  rating: 3,
+                });
+              } }
+              data-testid="3-rating"
+              type="radio"
+              id="nota3"
+              name="rating"
 
-          />
-          2
-        </label>
-        <label htmlFor="nota3">
-          {' '}
-          <input
-            onClick={ () => {
-              this.setState({
-                rating: 3,
-              });
-            } }
-            data-testid="3-rating"
-            type="radio"
-            id="nota3"
-            name="rating"
+            />
+            3
+          </label>
+          <label htmlFor="nota4">
+            {' '}
+            <input
+              onClick={ () => {
+                this.setState({
+                  rating: 4,
+                });
+              } }
+              data-testid="4-rating"
+              type="radio"
+              id="nota4"
+              name="rating"
 
-          />
-          3
-        </label>
-        <label htmlFor="nota4">
-          {' '}
-          <input
-            onClick={ () => {
-              this.setState({
-                rating: 4,
-              });
-            } }
-            data-testid="4-rating"
-            type="radio"
-            id="nota4"
-            name="rating"
+            />
+            4
+          </label>
+          <label htmlFor="nota5">
+            {' '}
+            <input
+              onClick={ () => {
+                this.setState({
+                  rating: 5,
+                });
+              } }
+              data-testid="5-rating"
+              type="radio"
+              id="nota5"
+              name="rating"
 
-          />
-          4
-        </label>
-        <label htmlFor="nota5">
-          {' '}
-          <input
-            onClick={ () => {
-              this.setState({
-                rating: 5,
-              });
-            } }
-            data-testid="5-rating"
-            type="radio"
-            id="nota5"
-            name="rating"
-
-          />
-          5
-        </label>
-
+            />
+            5
+          </label>
+          <button type="submit" data-testid="submit-review-btn">Enviar</button>
+        </form>
       </div>
     );
   }
