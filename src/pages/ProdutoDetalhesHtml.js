@@ -3,6 +3,21 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class ProdutoDetalhesHtml extends React.Component {
+  componentDidMount() {
+    const carrinhoItems = JSON.parse(localStorage.getItem('carrinhoLocalStorage'));
+    if (carrinhoItems !== null) {
+      this.quantidadeCarrinho();
+    }
+  }
+
+  quantidadeCarrinho = () => {
+    const carrinhoItems = JSON.parse(localStorage.getItem('carrinhoLocalStorage'));
+    if (carrinhoItems !== null) {
+      const carrinhoQuantidade = carrinhoItems.length;
+      localStorage.setItem('quantidadeCarrinho', carrinhoQuantidade);
+    }
+  };
+
   render() {
     const { produtoId, email, text, mostrarForm,
       infosForm, enableBtn, handleChange, enviarInfos,
@@ -16,6 +31,10 @@ class ProdutoDetalhesHtml extends React.Component {
           </div>
           <p data-testid="product-detail-price">{produtoId.price}</p>
         </Link>
+        <p data-testid="shopping-cart-size">
+          { JSON.parse(localStorage.getItem('quantidadeCarrinho'))}
+
+        </p>
         <button
           type="button"
           data-testid="shopping-cart-button"

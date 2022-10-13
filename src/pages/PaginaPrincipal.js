@@ -15,11 +15,29 @@ class PaginaPrincipal extends React.Component {
     itensLoja: [],
     mostrarItens: false,
     carrinho: [],
+    quantidadeCarrinho: '',
   };
 
   async componentDidMount() {
     this.setState({ categorias: await getCategories() });
+    const carrinhoItems = JSON.parse(localStorage.getItem('carrinhoLocalStorage'));
+    if (carrinhoItems !== null) {
+      this.setState({ carrinho: JSON.parse(localStorage.getItem('carrinhoLocalStorage')),
+
+      }, this.quantidadeCarrinho());
+    }
   }
+
+  quantidadeCarrinho = () => {
+    const carrinhoItems = JSON.parse(localStorage.getItem('carrinhoLocalStorage'));
+    if (carrinhoItems !== null) {
+      const carrinhoQuantidade = carrinhoItems.length;
+      localStorage.setItem('quantidadeCarrinho', carrinhoQuantidade);
+      this.setState({
+        quantidadeCarrinho: JSON.parse(localStorage.getItem('quantidadeCarrinho')),
+      });
+    }
+  };
 
   handleChange = ({ target }) => {
     const { name } = target;
@@ -54,6 +72,7 @@ class PaginaPrincipal extends React.Component {
   addCarrinhoAsync = () => {
     const { carrinho } = this.state;
     localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho));
+    this.quantidadeCarrinho();
   };
 
   addCarrinho = (item) => {
@@ -64,7 +83,8 @@ class PaginaPrincipal extends React.Component {
   };
 
   render() {
-    const { pesquisa, categorias, itensLoja, mostrarItens } = this.state;
+    const { pesquisa, categorias, itensLoja,
+      mostrarItens, quantidadeCarrinho } = this.state;
     return (
       <>
         <div>
@@ -91,6 +111,10 @@ class PaginaPrincipal extends React.Component {
             >
               Carrinho
             </button>
+            <p data-testid="shopping-cart-size">
+              { quantidadeCarrinho}
+
+            </p>
           </div>
         </div>
         {categorias.map((item) => (
