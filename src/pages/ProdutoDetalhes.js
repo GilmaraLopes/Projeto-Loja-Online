@@ -48,12 +48,6 @@ export default class ProdutoDetalhes extends Component {
     return arrayValidade.includes(false);
   };
 
-  // enviarInfos = async () => {
-  //   this.setState({
-  //     formValidade: this.validadeForm(),
-  //   }, () => this.enviaInfosAsync());
-  // };
-
   enviarInfos = () => {
     const validacao = this.validadeForm();
 

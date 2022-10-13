@@ -133,6 +133,7 @@ class ProdutoDetalhesHtml extends React.Component {
           >
             Enviar
           </button>
+
           { formValidade && (<p data-testid="error-msg">Campos inválidos</p>)}
           {mostrarForm
                   && infosForm.map((item, i) => (
