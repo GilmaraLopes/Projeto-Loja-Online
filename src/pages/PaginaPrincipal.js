@@ -153,6 +153,8 @@ class PaginaPrincipal extends React.Component {
                 Comprar
 
               </button>
+              {item.shipping.free_shipping && (
+                <p data-testid="free-shipping">Free Shipping</p>)}
             </>
           )) : (
             <p>Nenhum produto foi encontrado</p>

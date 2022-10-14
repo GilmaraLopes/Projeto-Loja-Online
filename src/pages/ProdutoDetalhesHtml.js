@@ -22,6 +22,7 @@ class ProdutoDetalhesHtml extends React.Component {
     const { produtoId, email, text, mostrarForm,
       infosForm, enableBtn, handleChange, enviarInfos,
       addCarrinho, formValidade } = this.props;
+    console.log(produtoId);
     return (
       <div>
         <Link to="/CarrinhoDeCompras" data-testid="product-detail-link">
