@@ -17,14 +17,16 @@ export default class CarrinhoDeCompras extends Component {
 
   addItem = (item) => {
     const { carrinho } = this.state;
-    item.quantidade += 1;
-    const novoCarrinho = [...carrinho];
-    this.setState(
-      () => ({
-        carrinho: novoCarrinho,
-      }),
-      localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho)),
-    );
+    if (item.quantidade < item.available_quantity) {
+      item.quantidade += 1;
+      const novoCarrinho = [...carrinho];
+      this.setState(
+        () => ({
+          carrinho: novoCarrinho,
+        }),
+        localStorage.setItem('carrinhoLocalStorage', JSON.stringify(carrinho)),
+      );
+    }
   };
 
   decreaseItem = (item) => {
